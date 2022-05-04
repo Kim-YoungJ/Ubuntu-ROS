@@ -1,0 +1,216 @@
+#opencv install
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install build-essential cmake
+sudo apt-get install pkg-config
+sudo apt-get install libjpeg-dev libtiff5-dev libpng-dev
+sudo apt-get install libavcodec-dev libavformat-dev libswscale-dev libxvidcore-dev libx264-dev libxine2-dev
+sudo apt-get install libv4l-dev v4l-utils
+sudo apt-get install libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev 
+sudo apt-get install libgtk2.0-dev
+sudo apt-get install mesa-utils libgl1-mesa-dri libgtkgl2.0-dev libgtkglext1-dev
+sudo apt-get install libatlas-base-dev gfortran libeigen3-dev
+sudo apt-get install python2.7-dev python3-dev python-numpy python3-numpy
+mkdir opencv
+cd opencv 
+wget -O opencv.zip https://github.com/opencv/opencv/archive/4.2.0.zip
+unzip opencv.zip
+wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/4.2.0.zip
+unzip opencv_contrib.zip
+ls -d */
+cd opencv-4.2.0/
+mkdir build
+cd build
+cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D WITH_TBB=OFF -D WITH_IPP=OFF -D WITH_1394=OFF -D BUILD_WITH_DEBUG_INFO=OFF -D BUILD_DOCS=OFF -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON -D BUILD_EXAMPLES=OFF -D BUILD_TESTS=OFF -D BUILD_PERF_TESTS=OFF -D WITH_QT=OFF -D WITH_GTK=ON -D WITH_OPENGL=ON -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-4.2.0/modules -D WITH_V4L=ON  -D WITH_FFMPEG=ON -D WITH_XINE=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D OPENCV_GENERATE_PKGCONFIG=ON ../
+
+cmake -D CMAKE_BUILD_TYPE=RELEASE \
+-D CMAKE_INSTALL_PREFIX=/usr/local \
+-D WITH_TBB=OFF \
+-D WITH_IPP=OFF \
+-D WITH_1394=OFF \
+-D BUILD_WITH_DEBUG_INFO=OFF \
+-D BUILD_DOCS=OFF \
+-D INSTALL_C_EXAMPLES=ON \
+-D INSTALL_PYTHON_EXAMPLES=ON \
+-D BUILD_EXAMPLES=OFF \
+-D BUILD_TESTS=OFF \
+-D BUILD_PERF_TESTS=OFF \
+-D WITH_QT=OFF \
+-D WITH_GTK=ON \
+-D WITH_OPENGL=ON \
+-D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-4.2.0/modules \
+-D WITH_V4L=ON  \
+-D WITH_FFMPEG=ON \
+-D WITH_XINE=ON \
+-D BUILD_NEW_PYTHON_SUPPORT=ON \
+-D OPENCV_GENERATE_PKGCONFIG=ON \
+-D PYTHON2_INCLUDE_DIR=/usr/include/python2.7 \
+-D PYTHON2_NUMPY_INCLUDE_DIRS=/usr/lib/python2.7/dist-packages/numpy/core/include/ \
+-D PYTHON2_PACKAGES_PATH=/usr/lib/python2.7/dist-packages \
+-D PYTHON2_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython2.7.so \
+-D PYTHON3_INCLUDE_DIR=/usr/include/python3.6m \
+-D PYTHON3_NUMPY_INCLUDE_DIRS=/usr/lib/python3/dist-packages/numpy/core/include/  \
+-D PYTHON3_PACKAGES_PATH=/usr/lib/python3/dist-packages \
+-D PYTHON3_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.6m.so \
+../
+
+cat /proc/cpuinfo | grep processor | wc -l
+time make -j(4)
+sudo make install
+sudo ldconfig
+## reference : https://webnautes.tistory.com/1186
+
+================================================================================
+ubuntu 18.04 LTS 설치
+
+install the ubuntu alongside with window in dual boot 
+- https://coding-factory.tistory.com/494
+install terminator 
+-> sudo apt-get install terminator 
+using : Ctrl+Shift+O, Ctrl+Shift+E, Alt+방향키  
+
+
+install ROS 
+http://wiki.ros.org/ROS/Installation. -> Melodic for ubuntu 18.04
+http://wiki.ros.org/melodic/Installation/Ubuntu
+-> setup your sources.list 
+sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+-> set up your keys
+sudo apt install curl # if you haven't already installed curl
+curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
+->update your ubuntu package index
+sudo apt update
+-> desktop full install
+sudo apt install ros-melodic-desktop-full
+-> environment setup
+echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
+source ~/.bashrc
+-> install dependencies for building packages
+sudo apt install python-rosdep python-rosinstall python-rosinstall-generator python-wstool build-essential
+->initialize rosdep
+sudo apt install python-rosdep
+sudo rosdep init
+rosdep update
+
+# gazebo error solution 
+.ignition/fuel/config.yaml 에서 url: https://api.ignitionrobotics.org 추가
+
+# QGroundControl 
+cd ~
+sudo usermod -a -G dialout $USER
+sudo apt-get remove modemmanager -y
+sudo apt install gstreamer1.0-plugins-bad gstreamer1.0-libav gstreamer1.0-gl -y
+sudo apt install libqt5gui5 -y
+
+https://docs.qgroundcontrol.com/master/en/getting_started/download_and_install.html -> Download QGroundControl. AppImage
+chmod +x ./QGroundControl.AppImage
+./QGroundControl.AppImage  (or double click)
+ -- udp port 14550 setting
+
+# MAVROS / PX4-Autopilot (cf) last version was PX4-Firmware / Mavlink 
+- PX4 Autopilot
+git clone https://github.com/PX4/PX4-Autopilot.git --recursive
+bash ./PX4-Autopilot/Tools/setup/ubuntu.sh --no-nuttx
+
+cd /path/to/PX4-Autopilot
+make px4_sitl gazebo
+
+- bashrc path setting 
+cd <PX4-Autopilot_clone>
+DONT_RUN=1 make px4_sitl_default gazebo
+source ~/catkin_ws/devel/setup.bash    # (optional)
+source Tools/setup_gazebo.bash $(pwd) $(pwd)/build/px4_sitl_default
+export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$(pwd)
+export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$(pwd)/Tools/sitl_gazebo
+roslaunch px4 posix_sitl.launch
+
+
+-mavros
+sudo apt install ros-melodic-mavros ros-melodic-mavros-extras
+sudo apt update
+wget https://raw.githubusercontent.com/mavlink/mavros/master/mavros/scripts/install_geographiclib_datasets.sh
+sudo bash ./install_geographiclib_datasets.sh
+
+sudo apt-get install python-catkin-tools python-rosinstall-generator -y
+mkdir -p ~/catkin_ws/src
+cd ~/catkin_ws
+catkin init
+wstool init src
+
+-mavlink 
+# We use the Kinetic reference for all ROS distros as it's not distro-specific and up to date
+rosinstall_generator --rosdistro kinetic mavlink | tee /tmp/mavros.rosinstall
+rosinstall_generator --upstream mavros | tee -a /tmp/mavros.rosinstall
+wstool merge -t src /tmp/mavros.rosinstall
+wstool update -t src -j4
+rosdep install --from-paths src --ignore-src -y
+./src/mavros/mavros/scripts/install_geographiclib_datasets.sh
+catkin build
+source devel/setup.bash
+
+
+
+
+# Vscode 
+sudo apt update
+sudo apt install software-properties-common apt-transport-https wget
+wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
+sudo apt update
+sudo apt install code
+
+cf) MAVROS 실행
+roslaunch mavros px4.launch fcu_url:="udp://:14540@192.168.1.36:14557"
+cf) offboard Control example
+mkdir -p offboard_ws/src
+cd offboard_ws/src
+git clong https://github.com/Jaeyoung-Lim/modudculab_ros.git
+cd..
+catkin_make
+source devel/setup.bash
+roslaunch modudculab_ros ctrl_pos_gazebo.launch
+*[[FATAL] [1632623735.~]:FCU:DeviceError:serial:open: No such file or Driectory] 오류 -> 실제 MAVROS를 통해 USB 등으로 싱글보드
+컴퓨터와의 연결 감지 x
+
+# Gmapping install 
+
+
+
+# http://wiki.ros.org/ROS/Tutorials/InstallingandConfiguringROSEnvironment
+-> create and build a catkin workspace
+cf) catkin_make command should be executed in workspace(~/catkin_ws), not in src directory.
+cd ~
+mkdir -p ~/catkin_ws/src
+cd ~/catkin_ws/
+catkin_make
+-> sourcing the files in devel after catkin_make process
+source devel/setup.bash
+cf) gedit ~/.bashrc -> add the line (source devel/setup.bash) in it.
+-------------------------------------------------------------------------------------------------------------------------------------------
+tutorial - turtlesim 
+http://wiki.ros.org/ROS/Tutorials/UnderstandingTopics
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+*important concepts of ROS
+node : nodes are processes that perform computation. a robotic system will usually comprise many nodes; one node to control a laser range-finder, one node to control wheel motors, 
+one node to perform localization control and so on.
+
+a node sends out a message by publishing it to a given topic. 
+a node that is interested in a certain kind of data will subscribe to the appropriate topic.
+one-to-one, one-to-many, many-to-many
+
+master : master provides name registration of all nodes and lookup information, much like a dns server.
+
+message : nodes communicate with each other by passing messages. a message is simply a data structure, comprising typed fields.
+megssages can be arbitrary nested structures and arrays much like structs in programming languages.
+
+topic : the topic is a name that is used to identify the content of the message.(name of the message)
+
+bags : bags are a format for saving and playing back ros message data. bags are improtant mechanisem for storing data, such as sensor data, that can be difficult to collect but is 
+necessary for devloping and testing algorithms.
+
+cf) registration info : node name, msg info to publish, mgs info to subscribe, ....
+--------------------------------------------------------------------------------------------------------------------------
+tips
+-> tmuxp 
+sudo apt install tmux tmuxp
