@@ -1,0 +1,5 @@
+sudo apt install r8168-dkms
+
+rtl 8125 drvier download
+
+-> sudo ./autorun.sh
