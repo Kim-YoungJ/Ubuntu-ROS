@@ -214,3 +214,10 @@ cf) registration info : node name, msg info to publish, mgs info to subscribe, .
 tips
 -> tmuxp 
 sudo apt install tmux tmuxp
+----------------------------------------------------------------------------------------------
+해상도 변경(강제버전)
+터미널 연결(ctrl + alt + T)
+sudo gedit /etc/default/grub
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash" 부분을 "quiet splash video=hyperv_fb:1920x1080"으로 변경
+sudo update-grub
+reboot
