@@ -124,6 +124,14 @@ export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$(pwd)
 export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$(pwd)/Tools/sitl_gazebo
 roslaunch px4 posix_sitl.launch
 
+<in my bashrc example>
+source /opt/ros/melodic/setup.bash
+source ~/catkin_ws/devel_isolated/setup.bash
+source ~/slam_ws/devel/setup.bash
+source ~/PX4-Autopilot/Tools/setup_gazebo.bash ~/PX4-Autopilot/build/px4_sitl_default
+export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:/PX4-Autopilot
+export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/PX4-Autopilot/Tools/sitl_gazebo
+
 
 -mavros
 sudo apt install ros-melodic-mavros ros-melodic-mavros-extras
