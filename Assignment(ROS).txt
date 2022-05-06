@@ -1,0 +1,49 @@
+Autonomous drone in PX4 Gazebo simulation 
+
+Control - own controller without using (/mavros/setpoint_position/*)
+-> not sending topics /mavros/setpoint_position/local for control 
+-> without falling 
+
+px4 -> controller 
+user make ->p-pi configuration
+
+Localization - SLAM algorithms 
+-> 3D/2D 
+-> SLAM
+-> Map Matching 
+
+Path Planning (collision Avoidance Path)
+- 3D/2D collision avoidance planner
+
+
+rule 
+- ros nodes -> origin to destination waypoint and return to the origin.
+- do not change starting position
+- can use QGC for arming and taking off.
+- laptime 
+- freference topic (the origin, goal points) -> topic : /scout/ground_truth/state_raw
+- Tmux/Tmuxp
+
+
+submit 
+- video
+- code
+- ppt
+
+
+==================================================================================
+darpa_simaultion code 
+
+~/catkin_ws/src
+rosdep install --from-paths . --ignore-src –r –y
+./darpa_sim/install_darp_sim_dependencies.sh
+
+cd ~/catkin_ws && catkin_make_isolated
+source devel_isolated/setup.bash
+
+<example launch> 
+cd ~/catkin_ws/src/darpa_sim && roslaunch ee478_submit_examp
+le.launch
+
+darpa_sim/simulation_drone/launch/ee478_darpa.launch
+
