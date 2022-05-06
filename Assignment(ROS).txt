@@ -47,3 +47,11 @@ le.launch
 
 darpa_sim/simulation_drone/launch/ee478_darpa.launch
 
+==================================================================================
+hdl_graph_slam command
+
+rosparam set use_sim_time true
+roslaunch hdl_graph_slam hdl_graph_slam_400.launch
+roscd hdl_graph_slam/rviz
+rviz -d hdl_graph_slam.rviz
+
