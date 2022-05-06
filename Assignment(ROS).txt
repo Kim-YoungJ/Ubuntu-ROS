@@ -42,8 +42,7 @@ cd ~/catkin_ws && catkin_make_isolated
 source devel_isolated/setup.bash
 
 <example launch> 
-cd ~/catkin_ws/src/darpa_sim && roslaunch ee478_submit_examp
-le.launch
+cd ~/catkin_ws/src/darpa_sim && roslaunch ee478_submit_example.launch
 
 darpa_sim/simulation_drone/launch/ee478_darpa.launch
 
