@@ -147,7 +147,7 @@ wstool init src
 
 -mavlink 
 # We use the Kinetic reference for all ROS distros as it's not distro-specific and up to date
-rosinstall_generator --rosdistro kinetic mavlink | tee /tmp/mavros.rosinstall
+rosinstall_generator --rosdistro melodic mavlink | tee /tmp/mavros.rosinstall
 rosinstall_generator --upstream mavros | tee -a /tmp/mavros.rosinstall
 wstool merge -t src /tmp/mavros.rosinstall
 wstool update -t src -j4
