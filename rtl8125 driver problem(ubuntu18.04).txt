@@ -1,5 +1,17 @@
+Realtaek driver problem 
+
 sudo apt install r8168-dkms
 
 rtl 8125 drvier download
 
 -> sudo ./autorun.sh
+
+
+Ndivia setting
+sudo apt-get purge nvidia*
+sudo apt install build-essential libglvnd-dev pkg-config
+
+Downlooad ndivia driver 
+
+chmod +x NVIDIA run file
+sudo ./NVIDIA run file
